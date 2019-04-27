@@ -1,0 +1,56 @@
+# encoding: utf-8
+
+from flask_restful import Resource, request
+import requests
+import json
+from .. import db
+from ..message import success_msg, fail_msg
+from ..config import WeChatApiConfig
+from ..models import User
+
+
+class Token(Resource):
+    'token相关'
+
+    def post(self):
+        '获取token'
+        request_data = request.get_json(force=True)
+        code = request_data.get('code')
+        if not code:
+            return fail_msg(msg='需要用户登录凭证！')
+        payload = {
+            'appid': WeChatApiConfig.appid,
+            'secret': WeChatApiConfig.appsecret,
+            'code': code,
+            'grant_type': 'authorization_code'
+        }
+        r = requests.get("https://api.weixin.qq.com/sns/oauth2/access_token", params=payload)
+        user_code = json.loads(r.content.decode())
+        if user_code.get('errcode'):
+            return fail_msg(status=0, msg='Code无效')
+        user = self.save_data(access_token=user_code.get('access_token'), openid=user_code.get('openid'))
+        token = user.generate_auth_token()
+        return success_msg(data={'token':token})
+
+    def save_data(self, access_token, openid):
+        '保存用户信息'
+        payload = {
+            'access_token': access_token,
+            'openid': openid,
+            'lang': 'zh_CN'
+        }
+        r = requests.get("https://api.weixin.qq.com/sns/userinfo", params=payload)
+        user_data = json.loads(r.content.decode())
+        user = User.query.filter_by(openid=user_data.get('openid')).first()
+        if user:
+            user.nickname = user_data.get('nickname')
+            user.gender = user_data.get('sex')
+            user.icon_url = user_data.get('headimgurl')
+            db.session.commit()
+            return user
+        else:
+            user = User(nickname=user_data.get('nickname'), gender=user_data.get('sex'),
+                        icon_url=user_data.get('headimgurl'))
+            db.session.add(user)
+            db.session.commit()
+            return user
