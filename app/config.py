@@ -20,5 +20,5 @@ class FlaskConfig():
     WTF_CSRF_ENABLED = False
 
 class WeChatApiConfig():
-    appid = ''
-    appsecret = ''
+    appid = os.environ.get('appid')
+    appsecret = os.environ.get('appsecret')

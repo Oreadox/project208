@@ -5,7 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPTokenAuth
 from flask_restful import Api
 from flask_cors import CORS
-from flask_mail import Mail
 from .config import FlaskConfig
 
 app = Flask(__name__)
