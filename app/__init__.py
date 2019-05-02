@@ -5,7 +5,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPTokenAuth
 from flask_restful import Api
 from flask_cors import CORS
-from .config import FlaskConfig
+import requests
+import json
+from .config import FlaskConfig, WeChatApiConfig
 
 app = Flask(__name__)
 app.config.from_object(FlaskConfig)

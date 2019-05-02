@@ -79,7 +79,7 @@ class TestLogin(Resource):
         return success_msg(data={'user_data': user})
 
     def get_data(self, access_token, openid):
-        '保存用户信息'
+        '获取用户信息'
         payload = {
             'access_token': access_token,
             'openid': openid,

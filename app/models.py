@@ -9,7 +9,7 @@ from app.config import FlaskConfig
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    openid = db.Column(db.String(64),unique=True, nullable=False)
+    openid = db.Column(db.String(64), unique=True, nullable=False)
     nickname = db.Column(db.String(64), nullable=False)
     gender = db.Column(db.SmallInteger, nullable=False)
     icon_url = db.Column(db.String(256))
@@ -31,12 +31,17 @@ class User(db.Model):
         user = User.query.get(data['id']).first()
         return user
 
+
 class QuestionSet(db.Model):
     __tablename__ = 'question_sets'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     questions = db.Column(db.String(30), nullable=False)  # 例: 123,124,125,126,127
+    content = db.Column(db.String(48), nullable=False)
+    message = db.Column(db.Text)
+    create_time = db.Column(db.DateTime, default=datetime.now)
     user = db.relationship('User', backref='question_sets', foreign_keys=user_id)
+
 
 class Answer(db.Model):
     __tablename__ = 'answers'
@@ -44,6 +49,8 @@ class Answer(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     set_id = db.Column(db.Integer, db.ForeignKey('question_sets.id'), nullable=False)  # 题组id
     answers = db.Column(db.String(10), nullable=False)  # 例: A,B,C,D,A
+    message = db.Column(db.Text)
+    create_time = db.Column(db.DateTime, default=datetime.now)
     user = db.relationship('User', backref='answers', foreign_keys=user_id)
     question_set = db.relationship('QuestionSet', backref='answers', foreign_keys=set_id)
 
@@ -58,10 +65,10 @@ class DefaultQuestion(db.Model):
     option_D = db.Column(db.String(32), nullable=False)
     is_valid = db.Column(db.Boolean, default=True)
 
+
 class DefaultMessage(db.Model):
     __tablename__ = 'default_messages'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    content = db.Column(db.String(32), nullable=False)
+    content = db.Column(db.String(64), nullable=False)
     angle = db.Column(db.SmallInteger, nullable=False)  # 0代表共同视角，1代表出题人视角，2则是答题人视角
     is_valid = db.Column(db.Boolean, default=True)
-
