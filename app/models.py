@@ -28,7 +28,7 @@ class User(db.Model):
             return None
         except BadSignature:
             return None
-        user = User.query.get(data['id']).first()
+        user = User.query.get(data['id'])
         return user
 
 

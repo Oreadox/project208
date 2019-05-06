@@ -17,7 +17,7 @@ class Token(Resource):
         request_data = request.get_json(force=True)
         code = request_data.get('code')
         if not code:
-            return fail_msg(msg='需要用户登录凭证！')
+            return fail_msg(status= -101, msg='需要用户登录凭证！')
         payload = {
             'appid': WeChatApiConfig.appid,
             'secret': WeChatApiConfig.appsecret,
@@ -27,7 +27,7 @@ class Token(Resource):
         r = requests.get("https://api.weixin.qq.com/sns/oauth2/access_token", params=payload)
         user_code = json.loads(r.content.decode())
         if user_code.get('errcode'):
-            return fail_msg(status=0, msg='Code无效')
+            return fail_msg(status= -102, msg='Code无效')
         user = self.save_data(access_token=user_code.get('access_token'), openid=user_code.get('openid'))
         token = user.generate_auth_token()
         return success_msg(data={'token': token})
