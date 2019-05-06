@@ -1,9 +1,10 @@
 # encoding: utf-8
 
 from flask_restful import Resource, request, reqparse
+from flask import g
 import requests
 import json
-from .. import db
+from .. import db, auth
 from ..message import success_msg, fail_msg
 from ..config import WeChatApiConfig
 from ..models import User
@@ -17,7 +18,7 @@ class Token(Resource):
         request_data = request.get_json(force=True)
         code = request_data.get('code')
         if not code:
-            return fail_msg(status= -101, msg='需要用户登录凭证！')
+            return fail_msg(status=-101, msg='需要用户登录凭证！')
         payload = {
             'appid': WeChatApiConfig.appid,
             'secret': WeChatApiConfig.appsecret,
@@ -27,7 +28,7 @@ class Token(Resource):
         r = requests.get("https://api.weixin.qq.com/sns/oauth2/access_token", params=payload)
         user_code = json.loads(r.content.decode())
         if user_code.get('errcode'):
-            return fail_msg(status= -102, msg='Code无效')
+            return fail_msg(status=-102, msg='Code无效')
         user = self.save_data(access_token=user_code.get('access_token'), openid=user_code.get('openid'))
         token = user.generate_auth_token()
         return success_msg(data={'token': token})
@@ -56,8 +57,26 @@ class Token(Resource):
             return user
 
 
+class UserData(Resource):
+    '用户信息'
+
+    @auth.login_required
+    def get(self):
+        '获取用户信息'
+        user = g.user
+        user_data = {
+            'id': user.id,  # 用户id(不是openid)
+            'nickname': user.nickname,
+            'gender': user.gender,  # 1为男性，2为女性，0为未知
+            'icon_url': user.icon_url,  # 用户头像URL,具体见微信官方文档
+            'registration_time': str(user.registration_time)
+        }
+        return success_msg(msg='获取成功', data=user_data)
+
+
 class TestLogin(Resource):
     '测试用接口'
+
     def __init__(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('code', type=str)
