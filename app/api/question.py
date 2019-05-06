@@ -2,7 +2,7 @@
 from flask_restful import Resource, request, reqparse, abort
 import requests
 import json
-from .. import db
+from .. import db, auth
 from ..message import success_msg, fail_msg
 from ..models import DefaultQuestion
 
@@ -14,6 +14,7 @@ class Question(Resource):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('id', type=str)
 
+    @auth.login_required
     def get(self):
         '获取单个题目数据'
         id = self.parser.parse_args().get('id')
@@ -38,6 +39,7 @@ class Question(Resource):
 class ValidQuestion(Resource):
     '有效的题目（is_valid==True)'
 
+    @auth.login_required
     def get(self):
         '获取有效的题目内容'
         questions = DefaultQuestion.query.filter_by(is_valid=True)
