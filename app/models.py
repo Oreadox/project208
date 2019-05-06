@@ -36,9 +36,8 @@ class QuestionSet(db.Model):
     __tablename__ = 'question_sets'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    questions = db.Column(db.String(30), nullable=False)  # 例: 123,124,125,126,127
-    content = db.Column(db.String(48), nullable=False)
-    message = db.Column(db.Text)
+    questions = db.Column(db.String(192), nullable=False)  # 例: {"问题序号1":"答案标号1",...} (json格式)
+    message = db.Column(db.Text)    # 留言完整内容
     create_time = db.Column(db.DateTime, default=datetime.now)
     user = db.relationship('User', backref='question_sets', foreign_keys=user_id)
 
@@ -48,8 +47,8 @@ class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     set_id = db.Column(db.Integer, db.ForeignKey('question_sets.id'), nullable=False)  # 题组id
-    answers = db.Column(db.String(10), nullable=False)  # 例: A,B,C,D,A
-    message = db.Column(db.Text)
+    answers = db.Column(db.String(10), nullable=False)  # 例: A,B,C,D,A (str格式)
+    message = db.Column(db.Text)    # 留言完整内容
     create_time = db.Column(db.DateTime, default=datetime.now)
     user = db.relationship('User', backref='answers', foreign_keys=user_id)
     question_set = db.relationship('QuestionSet', backref='answers', foreign_keys=set_id)
@@ -58,7 +57,7 @@ class Answer(db.Model):
 class DefaultQuestion(db.Model):
     __tablename__ = 'default_questions'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    subject = db.Column(db.String(64), nullable=False)
+    subject = db.Column(db.String(64), nullable=False)   # 题目
     option_A = db.Column(db.String(32), nullable=False)
     option_B = db.Column(db.String(32), nullable=False)
     option_C = db.Column(db.String(32), nullable=False)
@@ -69,6 +68,6 @@ class DefaultQuestion(db.Model):
 class DefaultMessage(db.Model):
     __tablename__ = 'default_messages'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    content = db.Column(db.String(64), nullable=False)
+    content = db.Column(db.String(64), nullable=False)  # 默认留言的内容
     angle = db.Column(db.SmallInteger, nullable=False)  # 0代表共同视角，1代表出题人视角，2则是答题人视角
     is_valid = db.Column(db.Boolean, default=True)
