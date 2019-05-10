@@ -7,9 +7,9 @@ class FlaskConfig():
     SECRET_KEY = os.environ.get('SECRET_KEY') or "S83rQ53gC4vdarcIAvY89Ky4"
     HOST = '127.0.0.1'
     PORT = '3306'
-    DATABASE = 'db1'
-    USERNAME = 'user'
-    PASSWORD = 'user'
+    DATABASE = 'ncuhome'
+    USERNAME = 'root'
+    PASSWORD = '123456'
     DB_URI = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format(USERNAME, PASSWORD, HOST, PORT, DATABASE)
     SQLALCHEMY_DATABASE_URI = DB_URI
     SQLALCHEMY_TRACK_MODIFICATIONS = True

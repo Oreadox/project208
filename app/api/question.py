@@ -4,7 +4,8 @@ import requests
 import json
 from .. import db, auth
 from ..message import success_msg, fail_msg
-from ..models import DefaultQuestion, DefaultMessage
+from ..models import DefaultQuestion, DefaultMessage, Answer
+from flask import g
 
 
 class Question(Resource):
@@ -66,3 +67,16 @@ class QuestionMessage(Resource):
             'content': [message.content for message in messages]
         }
         return success_msg(msg='获取成功', data=data)
+
+
+class MyQuestion(Resource):
+    @auth.login_required
+    def get(self):
+        user = g.user
+        answers = Answer.query.filter_by(user_id=user).all()
+        if answers:
+            data = [answer.to_json() for answer in answers]
+            return success_msg(msg="获取成功", data=data)
+        else:
+            return fail_msg(msg="你还没有设置题目哦")
+

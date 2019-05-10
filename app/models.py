@@ -5,6 +5,8 @@ from datetime import datetime
 from app import db
 from app.config import FlaskConfig
 
+import json
+
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -36,22 +38,37 @@ class QuestionSet(db.Model):
     __tablename__ = 'question_sets'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    questions = db.Column(db.String(192), nullable=False)  # 例: {"问题序号1":"答案标号1",...} (json格式)
-    message = db.Column(db.Text)    # 留言完整内容
+    questions = db.Column(db.UnicodeText, nullable=False)  # 例: {"问题序号1":"答案标号1",...} (json格式)
+    message = db.Column(db.UnicodeText)    # 留言完整内容
     create_time = db.Column(db.DateTime, default=datetime.now)
     user = db.relationship('User', backref='question_sets', foreign_keys=user_id)
 
 
 class Answer(db.Model):
+    """
+    回答问题的人记录的表
+    """
     __tablename__ = 'answers'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     set_id = db.Column(db.Integer, db.ForeignKey('question_sets.id'), nullable=False)  # 题组id
-    answers = db.Column(db.String(10), nullable=False)  # 例: A,B,C,D,A (str格式)
+    answers = db.Column(db.UnicodeText, nullable=False)  # 例: {"问题序号1":"答案标号1",...} (json格式)
     message = db.Column(db.Text)    # 留言完整内容
     create_time = db.Column(db.DateTime, default=datetime.now)
     user = db.relationship('User', backref='answers', foreign_keys=user_id)
     question_set = db.relationship('QuestionSet', backref='answers', foreign_keys=set_id)
+
+    def to_json(self):
+        data ={
+            "id": self.id,
+            "user_id": self.user_id,
+            "set_id": self.set_id,
+            "answers": json.loads(self.answers.replace("'", '"')),
+            "messsage": self.message,
+            "create_time": self.create_time,
+            "answer_man": self.user
+        }
+        return data
 
 
 class DefaultQuestion(db.Model):
