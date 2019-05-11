@@ -81,7 +81,6 @@ class MyQuestion(Resource):
         #     return success_msg(msg="获取成功", data=data)
         # else:
         #     return fail_msg(msg="你还没有设置题目哦")
-        return {"message": "001"}, 200
 
 
 
