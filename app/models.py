@@ -49,7 +49,8 @@ class QuestionSet(db.Model):
             "user_id": self.user_id,
             "qusetions": json.loads(self.questions),
             "message": self.message,
-            "create_time": self.create_time
+            "create_time": str(self.create_time)
+
         }
 
 
@@ -68,14 +69,13 @@ class Answer(db.Model):
     question_set = db.relationship('QuestionSet', backref='answers', foreign_keys=set_id)
 
     def to_json(self):
-        data ={
+        data = {
             "id": self.id,
             "user_id": self.user_id,
             "set_id": self.set_id,
-            "answers": json.loads(self.answers.replace("'", '"')),
+            "answers": json.loads(self.answers),
             "messsage": self.message,
-            "create_time": self.create_time,
-            "answer_man": self.user
+            "create_time": str(self.create_time)
         }
         return data
 

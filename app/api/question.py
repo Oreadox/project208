@@ -3,8 +3,8 @@ from flask_restful import Resource, request, reqparse, abort
 import requests
 import json
 from .. import db, auth
-from ..message import success_msg, fail_msg
-from ..models import DefaultQuestion, DefaultMessage, Answer
+from ..message import success_msg, fail_msg, add_args
+from ..models import DefaultQuestion, DefaultMessage, Answer, QuestionSet
 from flask import g
 
 
@@ -73,14 +73,31 @@ class MyQuestion(Resource):
     """
     获取我设置的题目
     """
+
+    @auth.login_required
     def get(self):
-        # user = "001"
-        # answers = Answer.query.filter_by(user_id=user).all()
-        # if answers:
-        #     data = [answer.to_json() for answer in answers]
-        #     return success_msg(msg="获取成功", data=data)
-        # else:
-        #     return fail_msg(msg="你还没有设置题目哦")
+        user = "1"
+        questions = QuestionSet.query.filter_by(user_id=user).all()
+        if questions:
+            data = [q.to_json() for q in questions]
+            return success_msg(msg="获取成功", data=data)
+        else:
+            return fail_msg(msg="你还没有设置题目哦")
+
+    def post(self):
+        user = g.user
+        args = add_args([
+            ["questions", dict, True, ""],
+            ["messages", str, True, ""]
+        ]).parse_args()
+        question = str(args["question"])
+        questions = QuestionSet(user_id=user.id,
+                                questions=question,
+                                message=args["message"])
+        db.session.add(questions)
+        db.session.commit()
+        return success_msg(msg="出题成功！")
+
 
 
 

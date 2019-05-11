@@ -60,7 +60,7 @@ class Token(Resource):
 class UserData(Resource):
     '用户信息'
 
-    # @auth.login_required
+    @auth.login_required
     def get(self):
         '获取用户信息'
         user = "1"
