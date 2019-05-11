@@ -43,6 +43,15 @@ class QuestionSet(db.Model):
     create_time = db.Column(db.DateTime, default=datetime.now)
     user = db.relationship('User', backref='question_sets', foreign_keys=user_id)
 
+    def to_json(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "qusetions": json.loads(self.questions),
+            "message": self.message,
+            "create_time": self.create_time
+        }
+
 
 class Answer(db.Model):
     """

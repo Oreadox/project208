@@ -24,7 +24,9 @@ def after_request(resp):
 
 
 from .models import User
-from flask import g
+from flask import g, blueprints
+
+
 
 
 @auth.verify_token

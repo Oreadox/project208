@@ -36,11 +36,10 @@ class MyAnswer(Resource):
             ["message", str, True, ""]
         ]).parse_args()
         answer = str(args["answer"])
-        answers = Answer(user_id=args["user_id"],
+        answers = Answer(user_id=answer_man.id,
                          set_id=args["set_id"],
                          answer=answer,
-                         message=args["message"],
-                         user=answer_man)
+                         message=args["message"],)
         db.session.add(answers)
         db.commit()
         qst_set = QuestionSet.query.filter_by(user_id=args["user_id"])

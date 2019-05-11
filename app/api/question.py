@@ -58,7 +58,7 @@ class QuestionMessage(Resource):
     def get(self):
         '获取默认留言'
         filters = {
-            DefaultMessage.is_valid == True,
+            DefaultMessage.is_valid is True,
             DefaultMessage.angle != 2
         }
         messages = DefaultMessage.query.filter(*filters).all()
@@ -70,13 +70,20 @@ class QuestionMessage(Resource):
 
 
 class MyQuestion(Resource):
-    @auth.login_required
+    """
+    获取我设置的题目
+    """
     def get(self):
-        user = g.user
-        answers = Answer.query.filter_by(user_id=user).all()
-        if answers:
-            data = [answer.to_json() for answer in answers]
-            return success_msg(msg="获取成功", data=data)
-        else:
-            return fail_msg(msg="你还没有设置题目哦")
+        # user = "001"
+        # answers = Answer.query.filter_by(user_id=user).all()
+        # if answers:
+        #     data = [answer.to_json() for answer in answers]
+        #     return success_msg(msg="获取成功", data=data)
+        # else:
+        #     return fail_msg(msg="你还没有设置题目哦")
+        return {"message": "001"}, 200
+
+
+
+
 
