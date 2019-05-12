@@ -17,11 +17,15 @@ class Question(Resource):
 
     @auth.login_required
     def get(self):
-        '获取单个题目数据'
+        '获取题目数据'
         id = self.parser.parse_args().get('id')
-        if not id:
-            abort(404)
-            return None
+        if not id:  # 获取所有有效的题目内容
+            questions = DefaultQuestion.query.filter_by(is_valid=True).all()
+            data = {
+                'total': len(questions),
+                'id': [question.id for question in questions]
+            }
+            return success_msg(msg='获取成功', data=data)
         question = DefaultQuestion.query.filter_by(id=id).first()
         if not question:
             abort(404)
@@ -35,20 +39,6 @@ class Question(Resource):
             'option_D': question.option_D  # D选项内容
         }
         return success_msg(msg='获取成功', data=question_data)
-
-
-class ValidQuestion(Resource):
-    '有效的题目（is_valid==True)'
-
-    @auth.login_required
-    def get(self):
-        '获取有效的题目内容'
-        questions = DefaultQuestion.query.filter_by(is_valid=True).all()
-        data = {
-            'total': len(questions),
-            'id': [question.id for question in questions]
-        }
-        return success_msg(msg='获取成功', data=data)
 
 
 class QuestionMessage(Resource):
@@ -78,16 +68,14 @@ class MyQuestion(Resource):
     def get(self):
         user = g.user
         questions = QuestionSet.query.filter_by(user_id=user.id).first()
-
         if questions:
             all_answer = []
             for ans in questions.answers:
                 answer = {
-                    "answer_man": ans.user_id,
+                    "user_id": ans.user_id,  # 答题者用户id
                     "answers": json.loads(ans.answers.replace("'", '"')),
                     "time": str(ans.create_time),
                     "score": ans.score
-
                 }
                 all_answer.append(answer)
             data = {
@@ -95,13 +83,12 @@ class MyQuestion(Resource):
                 "questions": json.loads(questions.questions.replace("'", '"')),
                 "messages": questions.message,
                 "all_answers": all_answer
-
-                }
-
+            }
             return success_msg(msg="获取成功", data=data)
         else:
             return fail_msg(msg="你还没有设置题目哦")
 
+    @auth.login_required
     def post(self):
         user = g.user
         args = add_args([
@@ -118,8 +105,3 @@ class MyQuestion(Resource):
         db.session.add(questions)
         db.session.commit()
         return success_msg(msg="出题成功！")
-
-
-
-
-

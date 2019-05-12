@@ -23,6 +23,7 @@ class MyAnswer(Resource):
         else:
             return fail_msg(msg="你还没有回答问题")
 
+    @auth.login_required
     def post(self):
 
         """
@@ -39,7 +40,7 @@ class MyAnswer(Resource):
         score = 0
         for i in q:
             if q[i] == args["answer"][i]:
-                score = score + 100/len(q)
+                score = score + 100 / len(q)
         answer = str(args["answer"])
         answers = Answer(user_id=answer_man.id,
                          set_id=args["set_id"],
@@ -48,11 +49,29 @@ class MyAnswer(Resource):
                          score=score)
         db.session.add(answers)
         db.session.commit()
-        qst_set = QuestionSet.query.filter_by(id=args["set_id"]).first()
-        data = qst_set.message
+        data = {
+            "score": score
+        }
+        if score >= 60:
+            qst_set = QuestionSet.query.filter_by(id=args["set_id"]).first()
+            message = qst_set.message
+            data['message'] = message
         return success_msg(msg="提交成功", data=data)
 
 
+class QuestionMessage(Resource):
+    '默认留言（仅答题者）'
 
-
-
+    @auth.login_required
+    def get(self):
+        '获取默认留言'
+        filters = {
+            DefaultMessage.is_valid is True,
+            DefaultMessage.angle != 1
+        }
+        messages = DefaultMessage.query.filter(*filters).all()
+        data = {
+            'total': len(messages),
+            'content': [message.content for message in messages]
+        }
+        return success_msg(msg='获取成功', data=data)

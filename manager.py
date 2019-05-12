@@ -3,7 +3,7 @@ from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from app import app, api, db
 from app.api.user import Token, UserData
-from app.api.question import ValidQuestion, Question, QuestionMessage, MyQuestion
+from app.api.question import Question, QuestionMessage, MyQuestion
 from app.api.answer import MyAnswer
 
 manager = Manager(app)
@@ -12,7 +12,6 @@ manager.add_command('db', MigrateCommand)
 
 api.add_resource(Token, '/api/user/token')
 api.add_resource(UserData, '/api/user/data')
-api.add_resource(ValidQuestion, '/api/question/valid')
 api.add_resource(Question, '/api/question')
 api.add_resource(MyQuestion, '/api/question/my')
 api.add_resource(QuestionMessage, '/api/question/message')
