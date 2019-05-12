@@ -77,26 +77,29 @@ class MyQuestion(Resource):
     @auth.login_required
     def get(self):
         user = g.user
-        questions = QuestionSet.query.filter_by(user_id=user.id).first()
+        questions = QuestionSet.query.filter_by(user_id=user.id).all()
 
         if questions:
-            all_answer = []
-            for ans in questions.answers:
-                answer = {
-                    "answer_man": ans.user_id,
-                    "answers": json.loads(ans.answers.replace("'", '"')),
-                    "time": str(ans.create_time),
-                    "score": ans.score
+            data = []
+            for qu in questions:
+                all_answer = []
+                for ans in qu.answers:
+                    answer = {
+                        "answer_man": ans.user_id,
+                        "answers": json.loads(ans.answers.replace("'", '"')),
+                        "time": str(ans.create_time),
+                        "score": ans.score
 
-                }
-                all_answer.append(answer)
-            data = {
-                "set_id": questions.id,
-                "questions": json.loads(questions.questions.replace("'", '"')),
-                "messages": questions.message,
-                "all_answers": all_answer
+                    }
+                    all_answer.append(answer)
+                ques = {
+                    "set_id": qu.id,
+                    "questions": json.loads(qu.questions.replace("'", '"')),
+                    "messages": qu.message,
+                    "all_answers": all_answer
 
-                }
+                    }
+                data.append(ques)
 
             return success_msg(msg="获取成功", data=data)
         else:
