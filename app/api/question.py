@@ -76,10 +76,28 @@ class MyQuestion(Resource):
 
     @auth.login_required
     def get(self):
-        user = "1"
-        questions = QuestionSet.query.filter_by(user_id=user).all()
+        user = g.user
+        questions = QuestionSet.query.filter_by(user_id=user.id).first()
+
         if questions:
-            data = [q.to_json() for q in questions]
+            all_answer = []
+            for ans in questions.answers:
+                answer = {
+                    "answer_man": ans.user_id,
+                    "answers": json.loads(ans.answers.replace("'", '"')),
+                    "time": str(ans.create_time),
+                    "score": ans.score
+
+                }
+                all_answer.append(answer)
+            data = {
+                "set_id": questions.id,
+                "questions": json.loads(questions.questions.replace("'", '"')),
+                "messages": questions.message,
+                "all_answers": all_answer
+
+                }
+
             return success_msg(msg="获取成功", data=data)
         else:
             return fail_msg(msg="你还没有设置题目哦")
@@ -90,14 +108,16 @@ class MyQuestion(Resource):
             ["questions", dict, True, ""],
             ["messages", str, True, ""]
         ]).parse_args()
-        question = str(args["question"])
+        question = str(args["questions"])
+        questions = QuestionSet.query.filter_by(user_id=user.id).first()
+        if questions:
+            return fail_msg(msg="您已经出过题目了")
         questions = QuestionSet(user_id=user.id,
                                 questions=question,
-                                message=args["message"])
+                                message=args["messages"])
         db.session.add(questions)
         db.session.commit()
         return success_msg(msg="出题成功！")
-
 
 
 

@@ -15,8 +15,8 @@ class MyAnswer(Resource):
         """
         查看我回答的问题
         """
-        user = "1"
-        answers = Answer.query.filter_by(user_id=user).all()
+        user = g.user
+        answers = Answer.query.join(QuestionSet).filter_by(user_id=user.id).all()
         if answers:
             data = [answer.to_json() for answer in answers]
             return success_msg(msg="获取成功", data=data)
@@ -30,19 +30,25 @@ class MyAnswer(Resource):
         """
         answer_man = g.user
         args = add_args([
-            ["user_id", str, True, ""],
             ["set_id", str, True, ""],
             ["answer", dict, True, ""],
-            ["message", str, True, ""]
+            ["message", str, True, "a"]
         ]).parse_args()
+        question = QuestionSet.query.filter_by(id=args["set_id"]).first()
+        q = json.loads(question.questions.replace("'", '"'))
+        score = 0
+        for i in q:
+            if q[i] == args["answer"][i]:
+                score = score + 100/len(q)
         answer = str(args["answer"])
         answers = Answer(user_id=answer_man.id,
                          set_id=args["set_id"],
-                         answer=answer,
-                         message=args["message"],)
+                         answers=answer,
+                         message=args["message"],
+                         score=score)
         db.session.add(answers)
-        db.commit()
-        qst_set = QuestionSet.query.filter_by(user_id=args["user_id"])
+        db.session.commit()
+        qst_set = QuestionSet.query.filter_by(id=args["set_id"]).first()
         data = qst_set.message
         return success_msg(msg="提交成功", data=data)
 

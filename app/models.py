@@ -47,10 +47,15 @@ class QuestionSet(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "qusetions": json.loads(self.questions),
+            "qusetions": json.loads(self.questions.replace("'", '"')),
             "message": self.message,
             "create_time": str(self.create_time)
+            }
 
+    def ans_json(self):
+        return {
+            "answer_man": self.answer.user_id,
+            "answers": json.loads(self.answer.answers.replace("'", '"'))
         }
 
 
@@ -66,6 +71,7 @@ class Answer(db.Model):
     message = db.Column(db.Text)    # 留言完整内容
     create_time = db.Column(db.DateTime, default=datetime.now)
     user = db.relationship('User', backref='answers', foreign_keys=user_id)
+    score = db.Column(db.String(36))
     question_set = db.relationship('QuestionSet', backref='answers', foreign_keys=set_id)
 
     def to_json(self):
@@ -75,7 +81,9 @@ class Answer(db.Model):
             "set_id": self.set_id,
             "answers": json.loads(self.answers),
             "messsage": self.message,
-            "create_time": str(self.create_time)
+            "create_time": str(self.create_time),
+            "score": self.score,
+            "real_answer": json.loads(self.question_set.questions.replace("'", '"'))
         }
         return data
 
