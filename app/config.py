@@ -24,5 +24,5 @@ class FlaskConfig():
 class WeChatApiConfig():
     # appid = os.environ.get('appid')
     # appsecret = os.environ.get('appsecret')
-    appid = 'wxf41bc95f18746664'  # WZB de测试号
+    appid = 'wxf41bc95f18746664'  # WZB 的测试号
     appsecret = '744bf227cd9bed816ae53d7d62b806c9'  # WZB
