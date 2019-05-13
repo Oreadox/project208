@@ -2,6 +2,7 @@
 
 import os
 
+
 class FlaskConfig():
     DEBUG = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or "S83rQ53gC4vdarcIAvY89Ky4"
@@ -18,6 +19,7 @@ class FlaskConfig():
     SQLALCHEMY_MAX_OVERFLOW = 50
     WTF_CSRF_CHECK_DEFAULT = False
     WTF_CSRF_ENABLED = False
+
 
 class WeChatApiConfig():
     appid = os.environ.get('appid')
