@@ -229,7 +229,7 @@ Authorization: Bearer
 ```
 
 ## 答题
-###　ＵＲＬ　/api/answer/my
+### URL　/api/answer/my
 ##### request header
 Authorization: Bearer
 ### POST
