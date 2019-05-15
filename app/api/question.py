@@ -68,7 +68,6 @@ class MyQuestion(Resource):
     def get(self):
         user = g.user
         questions = QuestionSet.query.filter_by(user_id=user.id).all()
-
         if questions:
             data = []
             for qu in questions:

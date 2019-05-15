@@ -1,6 +1,7 @@
 # encoding: utf-8
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
+from passlib.apps import custom_app_context
 from datetime import datetime
 from app import db
 from app.config import FlaskConfig
@@ -11,11 +12,18 @@ import json
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    openid = db.Column(db.String(64), unique=True, nullable=False)
-    nickname = db.Column(db.String(64), nullable=False)
+    # openid = db.Column(db.String(64), unique=True, nullable=False)
+    username = db.Column(db.String(64), nullable=False)
     gender = db.Column(db.SmallInteger, nullable=False)
-    icon_url = db.Column(db.String(256))
+    # icon_url = db.Column(db.String(256))
     registration_time = db.Column(db.DateTime, default=datetime.now)
+
+
+    def hash_password(self, password):
+        self.password_hash = custom_app_context.encrypt(password)
+
+    def verify_password(self, password):
+        return custom_app_context.verify(password, self.password_hash)
 
     def generate_auth_token(self, expiration=60 * 60 * 24):
         serialize = Serializer(FlaskConfig.SECRET_KEY, expires_in=expiration)
