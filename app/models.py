@@ -12,9 +12,9 @@ import json
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    # openid = db.Column(db.String(64), unique=True, nullable=False)
     username = db.Column(db.String(64), nullable=False)
-    gender = db.Column(db.SmallInteger, nullable=False)
+    gender = db.Column(db.SmallInteger)
+    password_hash = db.Column(db.String(128), nullable=False)
     # icon_url = db.Column(db.String(256))
     registration_time = db.Column(db.DateTime, default=datetime.now)
 

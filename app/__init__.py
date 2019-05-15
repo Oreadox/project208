@@ -7,7 +7,7 @@ from flask_restful import Api
 from flask_cors import CORS
 import requests
 import json
-from .config import FlaskConfig, WeChatApiConfig
+from .config import FlaskConfig
 
 app = Flask(__name__)
 app.config.from_object(FlaskConfig)
@@ -24,18 +24,13 @@ def after_request(resp):
 
 
 from .models import User
-from flask import g, blueprints
-
-
+from flask import g
 
 
 @auth.verify_token
 def verify_token(token):
-    if token == "test":
-        return True
-    else:
-        user = User.verify_auth_token(token)
-        if not user:
-            return False
-        g.user = user
-        return True
+    user = User.verify_auth_token(token)
+    if not user:
+        return False
+    g.user = user
+    return True

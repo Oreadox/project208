@@ -6,7 +6,7 @@ import json
 from .. import db, auth
 from ..message import success_msg, fail_msg
 from ..models import User
-from .form.user import SignupForm, LoginForm, ChangePasswordForm, ForgetPasswordForm
+from .form.user import SignupForm, LoginForm, ChangePasswordForm
 
 
 class Token(Resource):
@@ -51,7 +51,7 @@ class UserData(Resource):
             return fail_msg(msg='输入错误！')
         if g.error:
             return g.error
-        user = User(username=form.username.data, email=form.email.data)
+        user = User(username=form.username.data)
         user.hash_password(form.password.data)
         db.session.add(user)
         db.session.commit()
