@@ -115,7 +115,146 @@ Authorization: Bearer
 ##### request header
 Authorization: Bearer
 ### return
-```angular2
+```
+{
+    "status": 1,
+    "message": "成功",
+    "data": [
+        {
+            "set_id": 1,  //题组id
+            "questions": {
+                "1": "B" , //题目id： 设置的答案
+                "2": "A"
+            },
+            "messages": "出题者设置的留言",
+            "all_answers": [
+                {
+                    "answer_man": 1,  //回答者id
+                    "answers": {
+                        "1": "B", // 题目id, 回答者的答案
+                        "2": "B"
+                        
+                    },
+                    "time": "2019-05-11 13:01:06", //回答时间
+                    "score": "20" // 分数
+                },
+                {
+                    "answer_man": 2,
+                    "answers": {
+                        "1": "C"
+                    },
+                    "time": "2019-05-12 03:16:48",
+                    "score": "50"
+                }
+            ]
+        },
+        {
+            "set_id": 4,
+            "questions": {
+                "1": "A"
+            },
+            "messages": "",
+            "all_answers": []
+        }
+    ]
+}
+```
 
+ ## 出题
+ 
+ ### URL /api/question/my
+ ##### request header
+Authorization: Bearer
+ ### POST 
+ ```
+ {
+    "questions":{
+        "1":"B",
+        "2":"C"  //题目id： 出题者设置的答案
+        ...
+    },
+    "messages":"出题者设置的留言"
+ }
 
+```
+### RETURN
+```
+{
+    "status":1,
+    "message":"出题成功"
+}
+```
+## 获取我回答的问题
+### GET /api/answer/my
+##### request header
+Authorization: Bearer
+### RETURN
+
+```
+{
+    "status": 1,
+    "message": "获取成功",
+    "data": [
+        {
+            "id": 1,  // 回答问题的键
+            "user_id": 1,  //出题人id
+            "set_id": 1,  // 题组id
+            "answers": {
+                "1": "B" //答题人的huida
+            },
+            "messsage": "答题人的留言，如果score超过60就有这一项",
+            "create_time": "2019-05-11 13:01:06",
+            "score": "80",  
+            "real_answer": {
+                "1": "A"  //出题人设置的真正答案
+            }
+        },
+        {
+            "id": 3,
+            "user_id": 2,
+            "set_id": 1,
+            "answers": {
+                "1": "C"
+            },
+            "messsage": "dsdsads",
+            "create_time": "2019-05-12 03:16:48",
+            "score": "50",
+            "real_answer": {
+                "1": "a"
+            }
+        }
+    ]
+}
+
+```
+
+## 答题
+### URL　/api/answer/my
+##### request header
+Authorization: Bearer
+### POST
 ``` 
+{
+    "set_id":"1"  //题组号
+    "answer": {
+            "1":"B",  //题目序号：回答的答案
+            "2":"A",
+            ...
+            
+    },
+    "message":"回答问题的人给出题者的留言"
+}
+```
+### RETURN
+```
+{
+    "status":"1",
+    "message":"提交成功"，
+    "data":{
+        "score":60,
+        "message":"出题者的留言，分数高于６０就有此列"
+    }
+    
+}
+
+```
