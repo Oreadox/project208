@@ -1,10 +1,12 @@
 # encoding: utf-8
 
+import requests
+
 from flask_restful import Resource, request, reqparse
 from flask import g
 import json
 from .. import db, auth
-from ..message import success_msg, fail_msg
+from ..message import success_msg, fail_msg, add_args
 from ..models import User
 from .form.user import SignupForm, LoginForm, ChangePasswordForm
 
@@ -88,3 +90,59 @@ class Password(Resource):
         user.hash_password(form.password.data)
         db.session.commit()
         return success_msg()
+
+
+class Register(Resource):
+    def post(self):
+        args = add_args([
+            ["username", str, True, "缺少学号"],
+            ["password", str, True, "缺少密码"]
+
+        ], "json").parse_args()
+
+        url_a = "https://os.ncuos.com/api/user/token"
+
+        payload = {
+            "username": args["username"],
+            "password": args["password"]
+        }
+        headers = {
+            'Content-Type': "application/json",
+            'User-Agent': "PostmanRuntime/7.11.0",
+            'Accept': "*/*",
+            'Cache-Control': "no-cache",
+            'Postman-Token': "6a2ed635-b844-4488-8923-f3c1968ccaa6,7bf472df-2002-4ad9-bda5-52ce0ebb2fea",
+            'Host': "os.ncuos.com",
+            'accept-encoding': "gzip, deflate",
+            'content-length': "50",
+            'Connection': "keep-alive",
+            'cache-control': "no-cache"
+        }
+
+        response = requests.request("POST", url_a, data=payload, headers=headers)
+        if response.json().get("status") == 0:
+            return response.json()
+
+        payload = ""
+        token = 'passport ' + str(response.json().get("token"))
+        headers = {
+            'Content-Type': "application/json",
+            'Authorization':  token,
+            'User-Agent': "PostmanRuntime/7.11.0",
+            'Accept': "*/*",
+            'Cache-Control': "no-cache",
+            'Postman-Token': "4df2b6a0-5600-4468-adc6-6071e6292c31,87f000b6-1fba-453d-8cc1-bcb9db01af53",
+            'Host': "os.ncuos.com",
+            'accept-encoding': "gzip, deflate",
+            'Connection': "keep-alive",
+            'cache-control': "no-cache"
+        }
+
+        re = requests.request("GET", "https://os.ncuos.com/api/user/profile/basic", data=payload, headers=headers)
+        return {
+            "message": str(re.json().get("base_info").get("xh"))
+        }
+
+
+
+
