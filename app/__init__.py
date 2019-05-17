@@ -31,11 +31,17 @@ from flask import g, blueprints
 
 @auth.verify_token
 def verify_token(token):
-    if token == "test":
-        return True
-    else:
-        user = User.verify_auth_token(token)
-        if not user:
-            return False
-        g.user = user
-        return True
+    # if token == 1:
+    #     return True
+    # else:
+    #     user = User.verify_auth_token(token)
+    #     if not user:
+    #         return False
+    #     g.user = user
+    #     return True
+    user = User.query.filter_by(id=token).first()
+    if not user
+        return False
+    g.user = user
+    return True
+
