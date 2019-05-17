@@ -7,7 +7,7 @@ class FlaskConfig():
     SECRET_KEY = os.environ.get('SECRET_KEY') or "S83rQ53gC4vdarcIAvY89Ky4"
     HOST = '127.0.0.1'
     PORT = '3306'
-    DATABASE = 'ncuhome'
+    DATABASE = 'ncu'
     USERNAME = 'root'
     PASSWORD = 'keyu0102'
     DB_URI = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format(USERNAME, PASSWORD, HOST, PORT, DATABASE)

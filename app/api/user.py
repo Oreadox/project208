@@ -97,52 +97,44 @@ class Register(Resource):
         args = add_args([
             ["username", str, True, "缺少学号"],
             ["password", str, True, "缺少密码"]
-
-        ], "json").parse_args()
-
-        url_a = "https://os.ncuos.com/api/user/token"
-
+        ]).parse_args()
+        urla = "https://os.ncuos.com/api/user/token"
         payload = {
             "username": args["username"],
             "password": args["password"]
         }
         headers = {
             'Content-Type': "application/json",
-            'User-Agent': "PostmanRuntime/7.11.0",
-            'Accept': "*/*",
             'Cache-Control': "no-cache",
-            'Postman-Token': "6a2ed635-b844-4488-8923-f3c1968ccaa6,7bf472df-2002-4ad9-bda5-52ce0ebb2fea",
-            'Host': "os.ncuos.com",
-            'accept-encoding': "gzip, deflate",
-            'content-length': "50",
-            'Connection': "keep-alive",
-            'cache-control': "no-cache"
+            'Postman-Token': "1059212e-3f28-4244-9a47-c689158a469e",
+            'Host': "os.ncuos.com"
         }
 
-        response = requests.request("POST", url_a, data=payload, headers=headers)
-        if response.json().get("status") == 0:
+        response = requests.request("POST", urla, data=json.dumps(payload), headers=headers)
+        if response.json().get('status') == 0:
             return response.json()
+        urlb = "https://os.ncuos.com/api/user/profile/basic"
+        token = 'passport ' + response.json().get("token")
 
-        payload = ""
-        token = 'passport ' + str(response.json().get("token"))
         headers = {
             'Content-Type': "application/json",
-            'Authorization':  token,
-            'User-Agent': "PostmanRuntime/7.11.0",
-            'Accept': "*/*",
+            'Authorization': token,
             'Cache-Control': "no-cache",
-            'Postman-Token': "4df2b6a0-5600-4468-adc6-6071e6292c31,87f000b6-1fba-453d-8cc1-bcb9db01af53",
-            'Host': "os.ncuos.com",
-            'accept-encoding': "gzip, deflate",
-            'Connection': "keep-alive",
-            'cache-control': "no-cache"
+            'Postman-Token': "2a54dde4-15d9-4715-9d59-1ec0a1b6985c"
         }
 
-        re = requests.request("GET", "https://os.ncuos.com/api/user/profile/basic", data=payload, headers=headers)
+        re = requests.request("GET", urlb, data='', headers=headers)
+        user = User(id=args["username"], name=re.json().get("base_info").get("xm"))
+        user.hash_password(args["password"])
+        db.session.add(user)
+        db.session.commit()
+        user = User.query.filter_by(id=args["username"]).first()
+        token = user.generate_auth_token()
         return {
-            "message": str(re.json().get("base_info").get("xh"))
+            "status": 1,
+            "message": "成功",
+            "token": token.decode("ascii")
         }
-
 
 
 

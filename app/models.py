@@ -11,8 +11,8 @@ import json
 
 class User(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(64), nullable=False)
+    id = db.Column(db.String(64), primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
     gender = db.Column(db.SmallInteger)
     password_hash = db.Column(db.String(128), nullable=False)
     # icon_url = db.Column(db.String(256))
@@ -45,7 +45,7 @@ class User(db.Model):
 class QuestionSet(db.Model):
     __tablename__ = 'question_sets'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.String(64), db.ForeignKey('users.id'), nullable=False)
     questions = db.Column(db.UnicodeText, nullable=False)  # 例: {"问题序号1":"答案标号1",...} (json格式)
     message = db.Column(db.UnicodeText)    # 留言完整内容
     create_time = db.Column(db.DateTime, default=datetime.now)
@@ -73,7 +73,7 @@ class Answer(db.Model):
     """
     __tablename__ = 'answers'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.String(64), db.ForeignKey('users.id'), nullable=False)
     set_id = db.Column(db.Integer, db.ForeignKey('question_sets.id'), nullable=False)  # 题组id
     answers = db.Column(db.UnicodeText, nullable=False)  # 例: {"问题序号1":"答案标号1",...} (json格式)
     message = db.Column(db.Text)    # 留言完整内容
