@@ -40,7 +40,7 @@ def verify_token(token):
     #     g.user = user
     #     return True
     user = User.query.filter_by(id=token).first()
-    if not user
+    if not user:
         return False
     g.user = user
     return True
