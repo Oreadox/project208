@@ -113,6 +113,8 @@ class GetSet(Resource):
     @auth.login_required
     def get(self, id):
         question = QuestionSet.query.filter_by(id=id).first()
+        if not question:
+            return fail_msg(msg="没有此题组哦～")
         question_id = json.loads(question.questions.replace("'", '"'))
         datas = []
         for key in question_id.keys():
