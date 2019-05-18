@@ -66,7 +66,7 @@ class AnswerMessage(Resource):
     def get(self):
         '获取默认留言'
 
-        messages = DefaultMessage.query.filter(id=2).all()
+        messages = DefaultMessage.query.filter(angle=2).all()
         data = {
             'total': len(messages),
             'content': [message.content for message in messages]
