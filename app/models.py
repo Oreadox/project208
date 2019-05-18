@@ -87,7 +87,7 @@ class Answer(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "set_id": self.set_id,
-            "answers": json.loads(self.answers),
+            "answers": json.loads(self.answers.replace("'", '"')),
             "messsage": self.message,
             "create_time": str(self.create_time),
             "score": self.score,

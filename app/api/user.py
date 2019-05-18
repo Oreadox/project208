@@ -98,6 +98,20 @@ class Register(Resource):
             ["username", str, True, "缺少学号"],
             ["password", str, True, "缺少密码"]
         ]).parse_args()
+        user = User.query.filter_by(id=args["username"]).first()
+        if user:
+            if user.verify_password(password=args["password"]):
+
+                token = user.generate_auth_token()
+                return {
+                    "status": 1,
+                    "message": "登录成功！",
+                    "token": token.decode("ascii")
+                 }
+            return {
+                "status": 0,
+                "message": "密码错误！"
+            }
         urla = "https://os.ncuos.com/api/user/token"
         payload = {
             "username": args["username"],
@@ -135,6 +149,8 @@ class Register(Resource):
             "message": "成功",
             "token": token.decode("ascii")
         }
+
+
 
 
 
