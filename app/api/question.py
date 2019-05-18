@@ -30,13 +30,15 @@ class Question(Resource):
         if not question:
             abort(404)
             return None
+        options = []
+        options.append(question.option_A)
+        options.append(question.option_B)
+        options.append(question.option_C)
+        options.append(question.option_D)
         question_data = {
             'id': id,
             'subject': question.subject,  # 题目问题
-            'option_A': question.option_A,  # A选项内容
-            'option_B': question.option_B,  # B选项内容
-            'option_C': question.option_C,  # C选项内容
-            'option_D': question.option_D  # D选项内容
+            'options': options
         }
         return success_msg(msg='获取成功', data=question_data)
 
