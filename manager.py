@@ -10,14 +10,14 @@ manager = Manager(app)
 migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
 
-api.add_resource(Token, '/api/user/token')
+# api.add_resource(Token, '/api/user/token')
 api.add_resource(UserData, '/api/user/data')
 api.add_resource(Password, '/api/user/change')
 api.add_resource(Question, '/api/question')
 api.add_resource(MyQuestion, '/api/question/my')
 api.add_resource(QuestionMessage, '/api/question/message')
 api.add_resource(MyAnswer, '/api/answer/my')
-api.add_resource(Register, '/api/user/register')
+api.add_resource(Register, '/api/user/login')
 
 if __name__ == '__main__':
     manager.run()

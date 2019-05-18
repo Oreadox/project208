@@ -147,7 +147,8 @@ class Register(Resource):
         return {
             "status": 1,
             "message": "成功",
-            "token": token.decode("ascii")
+            "token": token.decode("ascii"),
+            "name": re.json().get("base_info").get("xm")
         }
 
 
