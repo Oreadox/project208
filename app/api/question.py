@@ -34,7 +34,7 @@ class Question(Resource):
         options.append(question.option_D)
         question_data = {
             'id': id,
-            'questions': question.subject,  # 题目问题
+            'question': question.subject,  # 题目问题
             'options': options
         }
         return success_msg(msg='获取成功', data=question_data)

@@ -117,7 +117,7 @@ class DefaultQuestion(db.Model):
 
         data = {
             "id": self.id,
-            "questions": self.subject,
+            "question": self.subject,
             "options": options
         }
         return data
