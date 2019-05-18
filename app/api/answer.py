@@ -59,7 +59,7 @@ class MyAnswer(Resource):
         return success_msg(msg="提交成功", data=data)
 
 
-class QuestionMessage(Resource):
+class AnswerMessage(Resource):
     '默认留言（仅答题者）'
 
     @auth.login_required
@@ -67,7 +67,7 @@ class QuestionMessage(Resource):
         '获取默认留言'
         filters = {
             DefaultMessage.is_valid is True,
-            DefaultMessage.angle != 1
+            DefaultMessage.angle == 2
         }
         messages = DefaultMessage.query.filter(*filters).all()
         data = {
