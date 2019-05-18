@@ -107,3 +107,25 @@ class MyQuestion(Resource):
         db.session.add(questions)
         db.session.commit()
         return success_msg(msg="出题成功！")
+
+
+class GetSet(Resource):
+    @auth.login_required
+    def get(self, id):
+        question = QuestionSet.query.filter_by(id=id).first()
+        questions = json.loads(question.question.replace("'", '"'))
+        datas = []
+        for keys in questions:
+            qu = DefaultQuestion.query.filter_by(id=keys).first()
+            data = {
+                "id": qu.id,
+                "question": qu.subject
+            }
+            datas.append(data)
+        return success_msg(msg="成功！", data=datas)
+
+
+
+
+
+
