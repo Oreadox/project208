@@ -83,24 +83,8 @@ Authorization: Bearer
 
 ```
 
-## 获取有效的题目
-#### URL /api/question/valid
-### GET
-##### request header 
-Authorization: Bearer
-### return
-```angular2
 
-{
-    "status":1,
-    "message":"获取成功！",
-    "data":{
-        "total": 5 // 题目总数
-        "id":[1,2,3,4,5,] // 列表
-        
-    }
-}
-```
+
 ## 获取默认（待选择）的留言
 #### URL 
 ### GET /api/question/message
