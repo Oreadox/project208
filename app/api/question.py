@@ -98,9 +98,7 @@ class MyQuestion(Resource):
             ["messages", str, True, ""]
         ]).parse_args()
         question = str(args["questions"])
-        questions = QuestionSet.query.filter_by(user_id=user.id).first()
-        if questions:
-            return fail_msg(msg="您已经出过题目了")
+        # questions = QuestionSet.query.filter_by(user_id=user.id).first()
         questions = QuestionSet(user_id=user.id,
                                 questions=question,
                                 message=args["messages"])
