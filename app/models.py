@@ -106,6 +106,20 @@ class DefaultQuestion(db.Model):
     option_D = db.Column(db.String(32), nullable=False)
     is_valid = db.Column(db.Boolean, default=True)
 
+    def to_json(self):
+        options = []
+        options.append(self.option_A)
+        options.append(self.option_B)
+        options.append(self.option_C)
+        options.append(self.option_D)
+
+        data = {
+            "id": self.id,
+            "questions": self.subject,
+            "options": options
+        }
+        return data
+
 
 class DefaultMessage(db.Model):
     __tablename__ = 'default_messages'

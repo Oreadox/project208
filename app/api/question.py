@@ -20,16 +20,13 @@ class Question(Resource):
         '获取题目数据'
         id = self.parser.parse_args().get('id')
         if not id:  # 获取所有有效的题目内容
-            questions = DefaultQuestion.query.filter_by(is_valid=True).all()
-            data = {
-                'total': len(questions),
-                'id': [question.id for question in questions]
-            }
-            return success_msg(msg='获取成功', data=data)
+            questions = DefaultQuestion.query.all()
+            data = []
+            for q in questions:
+                data.append(q.to_json())
+            return success_msg(msg="成功", data=data)
+
         question = DefaultQuestion.query.filter_by(id=id).first()
-        if not question:
-            abort(404)
-            return None
         options = []
         options.append(question.option_A)
         options.append(question.option_B)
@@ -37,10 +34,12 @@ class Question(Resource):
         options.append(question.option_D)
         question_data = {
             'id': id,
-            'subject': question.subject,  # 题目问题
+            'questions': question.subject,  # 题目问题
             'options': options
         }
         return success_msg(msg='获取成功', data=question_data)
+
+
 
 
 class QuestionMessage(Resource):
