@@ -43,8 +43,46 @@ Authorization: Bearer
         'options':["这是选项A"，"这是选项B"，"这是选项C","这是选项D"]    
     }
 }
-//  缺少id或id部队返回404
+//  id不对返回404
 ```
+## 获取所有题目
+### URL /api/question
+### GET
+##### request header 
+Authorization: Bearer
+### return
+```
+{
+    "status":1,
+    "message":"获取成功",
+    "data":[
+        {
+            "id":1,  //题目的唯一标识符
+            "question":"我喜欢吃水果吗",
+            "options":[
+                "这是A",
+                "这是B",
+                "这是C",
+                "这是D"
+            ]
+            
+        },
+        {
+            "id":2,  //题目的唯一标识符
+            "question":"我喜欢吃饭吗",
+            "options":[
+                "这是A",
+                "这是B",
+                "这是C",
+                "这是D"
+            ]
+            
+        }，
+        {...}
+    ]
+
+```
+
 ## 获取有效的题目
 #### URL /api/question/valid
 ### GET
@@ -100,7 +138,9 @@ Authorization: Bearer
             "messages": "出题者设置的留言",
             "all_answers": [
                 {
-                    "answer_man": 1,  //回答者id
+                    "answer_man": "5907118053",  //回答者id
+                    "name":"郭昕宇"，
+                    "sex":1,
                     "answers": {
                         "1": "B", // 题目id, 回答者的答案
                         "2": "B"
@@ -110,7 +150,9 @@ Authorization: Bearer
                     "score": "20" // 分数
                 },
                 {
-                    "answer_man": 2,
+                    "answer_man": "5907118052,
+                    "name": "小红",
+                    "sex":0,
                     "answers": {
                         "1": "C"
                     },
@@ -125,7 +167,7 @@ Authorization: Bearer
                 "1": "A"
             },
             "messages": "",
-            "all_answers": []
+            "all_answers": [...]
         }
     ]
 }
