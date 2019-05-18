@@ -117,10 +117,7 @@ class GetSet(Resource):
         datas = []
         for key in question_id.keys():
             qu = DefaultQuestion.query.filter_by(id=key).first()
-            data = {
-                "id": key,
-                "question": qu.subject
-            }
+            data = qu.to_json()
             datas.append(data)
         return success_msg(msg="成功！", data=datas)
         # return {
