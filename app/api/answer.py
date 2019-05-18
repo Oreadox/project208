@@ -65,11 +65,8 @@ class AnswerMessage(Resource):
     @auth.login_required
     def get(self):
         '获取默认留言'
-        filters = {
-            DefaultMessage.is_valid is True,
-            DefaultMessage.angle == 2
-        }
-        messages = DefaultMessage.query.filter(*filters).all()
+
+        messages = DefaultMessage.query.filter(id=2).all()
         data = {
             'total': len(messages),
             'content': [message.content for message in messages]
