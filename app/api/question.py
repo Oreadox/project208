@@ -9,7 +9,7 @@ from flask import g
 
 
 class Question(Resource):
-    '题目相关'
+    """题目相关"""
 
     def __init__(self):
         self.parser = reqparse.RequestParser()
@@ -17,7 +17,7 @@ class Question(Resource):
 
     @auth.login_required
     def get(self):
-        '获取题目数据'
+        """获取题目数据"""
         id = self.parser.parse_args().get('id')
         if not id:  # 获取所有有效的题目内容
             questions = DefaultQuestion.query.all()
@@ -41,11 +41,10 @@ class Question(Resource):
 
 
 class QuestionMessage(Resource):
-    '默认留言（仅出题者）'
+    """获取出题者的默认留言"""
 
     @auth.login_required
     def get(self):
-        '获取默认留言'
         messages = DefaultMessage.query.filter_by(angle=1).all()
         data = {
             'total': len(messages),

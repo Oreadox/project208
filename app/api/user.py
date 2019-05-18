@@ -12,7 +12,7 @@ from .form.user import SignupForm, LoginForm, ChangePasswordForm
 
 
 class Token(Resource):
-    'token相关'
+    """token相关"""
 
     def post(self):
         '获取token'
@@ -32,11 +32,11 @@ class Token(Resource):
 
 
 class UserData(Resource):
-    '用户信息'
+    """用户信息"""
 
     @auth.login_required
     def get(self):
-        '获取用户信息'
+        """获取用户信息"""
         user = g.user
         user_data = {
             'id': user.id,  # 用户id(不是openid)
@@ -47,7 +47,7 @@ class UserData(Resource):
         return success_msg(msg='获取成功', data=user_data)
 
     def post(self):
-        '新建用户'
+        """新建用户"""
         form = SignupForm()
         if not form.validate_on_submit():
             return fail_msg(msg='输入错误！')

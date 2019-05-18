@@ -60,11 +60,11 @@ class MyAnswer(Resource):
 
 
 class AnswerMessage(Resource):
-    '默认留言（仅答题者）'
+    """默认留言（仅答题者）"""
 
     @auth.login_required
     def get(self):
-        '获取默认留言'
+        """获取默认留言"""
 
         messages = DefaultMessage.query.filter_by(angle=2).all()
         data = {
