@@ -34,3 +34,4 @@ def verify_token(token):
         return False
     g.user = user
     return True
+
