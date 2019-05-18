@@ -40,8 +40,6 @@ class Question(Resource):
         return success_msg(msg='获取成功', data=question_data)
 
 
-
-
 class QuestionMessage(Resource):
     '默认留言（仅出题者）'
 

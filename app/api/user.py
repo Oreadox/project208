@@ -75,8 +75,9 @@ class UserData(Resource):
         db.session.commit()
         return success_msg()
 
+
 class Password(Resource):
-    '用户密码'
+    """用户密码"""
 
     @auth.login_required
     def put(self):
