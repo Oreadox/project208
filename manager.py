@@ -19,7 +19,7 @@ api.add_resource(QuestionMessage, '/api/question/message')
 api.add_resource(AnswerMessage, '/api/answer/message')
 api.add_resource(MyAnswer, '/api/answer/my')
 api.add_resource(Register, '/api/user/login')
-api.add_resource(GetSet, '/api/getset')
+api.add_resource(GetSet, '/api/getset/<int:id>')
 
 if __name__ == '__main__':
     manager.run()

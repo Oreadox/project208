@@ -113,16 +113,19 @@ class GetSet(Resource):
     @auth.login_required
     def get(self, id):
         question = QuestionSet.query.filter_by(id=id).first()
-        questions = json.loads(question.question.replace("'", '"'))
+        question_id = json.loads(question.questions.replace("'", '"'))
         datas = []
-        for keys in questions:
-            qu = DefaultQuestion.query.filter_by(id=keys).first()
+        for key in question_id.keys():
+            qu = DefaultQuestion.query.filter_by(id=key).first()
             data = {
-                "id": qu.id,
+                "id": key,
                 "question": qu.subject
             }
             datas.append(data)
         return success_msg(msg="成功！", data=datas)
+        # return {
+        #     "a":question_id
+        # }
 
 
 
