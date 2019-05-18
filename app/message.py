@@ -1,6 +1,7 @@
 # encoding: utf-8
 from flask_restful import reqparse
 
+
 def add_args(li, location='json'):
     """add resource reqparse argument from list"""
 
@@ -27,5 +28,6 @@ def success_msg(msg='成功！', status=1, data={}):
         "status": status,
         "message": msg
     }
-    if data: message['data'] = data
+    if data:
+        message['data'] = data
     return message
