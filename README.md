@@ -33,18 +33,14 @@ or
 ##### request header 
 Authorization: Bearer
 ### return
-```angular2
+```
 {
     "status":1,
     "message":"获取成功！",
     "data":{
         "id": 1,  //题目id
         'subject': what,  // 题目问题
-        'option_A': option_A,  // A选项内容
-        'option_B': option_B,  // B选项内容
-        'option_C': option_C,  // C选项内容
-        'option_D': option_D  // D选项内容
-        
+        'options':["这是选项A"，"这是选项B"，"这是选项C","这是选项D"]    
     }
 }
 //  缺少id或id部队返回404
