@@ -3,52 +3,27 @@
 #### 除了登陆授权获取基本信息其他路由带上请求头
 Authorization: Bearer
 ###
-## 授权登陆
-#### URL：/api/user/token
+## 登录
+#### URL /api/user/login
 ### POST
 ```
 {
-    "code":"CODE"
+    "username":"5907118053"  //学号
+    "password":"123456"  
 }
 ```
 #### RETURN
 ```
 {
-    "status":-102, //code无效或过期
-    "message":"CODE无效！"
-}
-{
-    "status":-101, //缺少code
-    "message":"用户登录需要凭证"
-}
-{
     "status":1,
-    "message":"成功！"，
-    "data":{
-        "token":TOKEN
-    }
+    "message":"登录成功",
+    "token":"dasdadasdadadadad"
+    "name": "郭昕宇"
 }
-
-```
-
-## 获取用户基本信息
-#### URL /api/user/data
-### GET
-##### request header 
-Authorization: Bearer
-### RETURN
-```angular2
+or
 {
-    "status":1,
-    "message":"获取成功！",
-    "data":{
-        "id": 1314  //用户id
-        'id': user.id,  //用户id(不是openid)
-        'nickname': nickname,  //昵称
-        'gender': gender,  // 1为男性，2为女性，0为未知
-        'icon_url': icon_url,  // 用户头像URL,具体见微信官方文档
-        'registration_time': //注册时间
-    }
+    "status":0,
+    "message":"密码错误"
 }
 ```
 
