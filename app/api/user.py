@@ -105,7 +105,7 @@ class Register(Resource):
                 token = user.generate_auth_token()
                 return {
                     "status": 1,
-                    "message": "登录成功！",
+                    "message": "获取成功",
                     "token": token.decode("ascii"),
                     "sex": user.gender
                  }

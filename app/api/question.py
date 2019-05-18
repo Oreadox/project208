@@ -75,7 +75,9 @@ class MyQuestion(Resource):
                 all_answer = []
                 for ans in qu.answers:
                     answer = {
-                        "answer_man": ans.user_id,
+                        "answer_man": ans.user.id,
+                        "name": ans.user.name,
+                        "sex": ans.user.gender,
                         "answers": json.loads(ans.answers.replace("'", '"')),
                         "time": str(ans.create_time),
                         "score": ans.score

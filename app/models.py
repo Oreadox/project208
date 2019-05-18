@@ -87,6 +87,8 @@ class Answer(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "set_id": self.set_id,
+            "set_man": self.question_set.user.name,
+            "set_sex": self.question_set.user.gender,
             "answers": json.loads(self.answers.replace("'", '"')),
             "messsage": self.message,
             "create_time": str(self.create_time),
