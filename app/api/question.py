@@ -46,7 +46,7 @@ class QuestionMessage(Resource):
     @auth.login_required
     def get(self):
         '获取默认留言'
-        messages = DefaultMessage.query.filter_by(angel=1).all()
+        messages = DefaultMessage.query.filter_by(angle=1).all()
         data = {
             'total': len(messages),
             'content': [message.content for message in messages]
