@@ -27,7 +27,7 @@ class Token(Resource):
             return fail_msg("该用户不存在！")
         if not user.verify_password(password=form.password.data):
             return fail_msg("密码错误！")
-        token = user.generate_auth_token()
+        token = user.generate_auth_token(expiration=30*24*60*60)
         return ({'token': token.decode('ascii')})
 
 
@@ -148,7 +148,7 @@ class Register(Resource):
         db.session.add(user)
         db.session.commit()
         user = User.query.filter_by(id=args["username"]).first()
-        token = user.generate_auth_token()
+        token = user.generate_auth_token(expiration=30*24*60*60)
         return {
             "status": 1,
             "message": "成功",

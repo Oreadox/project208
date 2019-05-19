@@ -5,9 +5,13 @@ from app import app, api, db
 from app.api.user import Token, UserData, Password, Register
 from app.api.question import Question, QuestionMessage, MyQuestion, GetSet
 from app.api.answer import MyAnswer, AnswerMessage
+from app.models import DefaultQuestion, DefaultMessage, User,QuestionSet,Answer
+from flask_cors import CORS
 
 manager = Manager(app)
 migrate = Migrate(app, db)
+CORS(app, supports_credentials=True)
+
 manager.add_command('db', MigrateCommand)
 
 # api.add_resource(Token, '/api/user/token')
