@@ -13,7 +13,7 @@ class Question(Resource):
 
     def __init__(self):
         self.parser = reqparse.RequestParser()
-        self.parser.add_argument('id', type=str)
+        self.parser.add_argument('id', type=int)
 
     @auth.login_required
     def get(self):
@@ -27,6 +27,8 @@ class Question(Resource):
             return success_msg(msg="成功", data=data)
 
         question = DefaultQuestion.query.filter_by(id=id).first()
+        if not question:
+            return fail_msg(msg="没有此题目")
         options = []
         options.append(question.option_A)
         options.append(question.option_B)
