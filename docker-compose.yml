@@ -1,0 +1,11 @@
+version: '2'
+services:
+  project208:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/project208
+    ports:
+      - "8111:5000"

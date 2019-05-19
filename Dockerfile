@@ -1,6 +1,12 @@
-FROM python:3.6.5
+FROM python:3.6
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+
 COPY ./requirements.txt /tmp
-RUN pip install -r /tmp/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+RUN pip install --upgrade pip
+RUN pip install -r /tmp/requirements.txt --no-cache-dir --disable-pip-version-check -i https://pypi.tuna.tsinghua.edu.cn/simple
 WORKDIR /project208
 EXPOSE 80
-CMD ["uwsgi", "--ini", "/myblog/myblog-uwsgi.ini"]
+CMD ["uwsgi", "--ini", "/project208/uwsgi.ini"]
