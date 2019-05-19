@@ -35,6 +35,9 @@ class MyAnswer(Resource):
             ["answer", dict, True, ""],
             ["message", str, True, "a"]
         ]).parse_args()
+        ans = Answer.query.filter_by(id=answer_man.id, set_id=args["set_id"]).first()
+        if ans:
+            return fail_msg(msg="只能答一次题哦")
         question = QuestionSet.query.filter_by(id=args["set_id"]).first()
         q = json.loads(question.questions.replace("'", '"'))
         score = 0
