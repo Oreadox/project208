@@ -256,3 +256,60 @@ Authorization: Bearer
 }
 
 ```
+
+
+## 根据set_id获取题组
+### URL /api/getset/<int:id>
+
+#### GET
+
+#### return
+```
+{
+    "status": 1,
+    "message": "成功！",
+    "data": [
+        {
+            "id": 2,
+            "question": "我喜欢去哪里",
+            "options": [
+                "北京",
+                "上海",
+                "广州",
+                "深圳"
+            ]
+        },
+        {
+            "id": 4,
+            "question": "我喜欢那种饭",
+            "options": [
+                "牛肉饭",
+                "咖喱饭",
+                "煲仔饭",
+                "牛逼"
+            ]
+        },
+        {
+            "id": 1,
+            "question": "我喜欢什么水果",
+            "options": [
+                "苹果",
+                "香蕉",
+                "梨",
+                "桃子"
+            ]
+        },
+        {
+            "id": 3,
+            "question": "我喜欢男的女的",
+            "options": [
+                "男的",
+                "女的",
+                "中性",
+                "人妖"
+            ]
+        }
+    ]
+}
+```
+
