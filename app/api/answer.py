@@ -59,6 +59,7 @@ class MyAnswer(Resource):
             return success_msg(msg="提交成功", data=data)
         else:
             data['message'] = "由于研究结果未达标准，你无法查看TA给你的小纸条喔～"
+            return success_msg(msg="提交成功", data=data)
 
 
 class AnswerCheck(Resource):
