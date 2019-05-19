@@ -6,7 +6,7 @@ import os
 class FlaskConfig():
     DEBUG = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or "S83rQ53gC4vdarcIAvY89Ky4"
-    HOST = '127.0.0.1'
+    HOST = '47.101.204.202'
     PORT = '3306'
     DATABASE = 'ncu'
     USERNAME = 'root'
