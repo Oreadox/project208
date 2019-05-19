@@ -6,11 +6,11 @@ import os
 class FlaskConfig():
     DEBUG = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or "S83rQ53gC4vdarcIAvY89Ky4"
-    HOST = '47.101.204.202'
+    HOST = 'ncuhomev5.mysql.rds.aliyuncs.com'
     PORT = '3306'
-    DATABASE = 'ncu'
-    USERNAME = 'root'
-    PASSWORD = 'keyu0102'
+    DATABASE = 'ncu520'
+    USERNAME = 'ncu520'
+    PASSWORD = os.environ.get("PASSWORD")
     DB_URI = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format(USERNAME, PASSWORD, HOST, PORT, DATABASE)
     SQLALCHEMY_DATABASE_URI = DB_URI
     SQLALCHEMY_TRACK_MODIFICATIONS = True
