@@ -276,6 +276,7 @@ Authorization: Bearer
     "message":"没有回答过"
 
 }
+```
 
 
 
@@ -287,7 +288,9 @@ Authorization: Bearer
 #### GET
 
 #### return
+
 ```
+
 {
     "status": 1,
     "message": "成功！",
@@ -334,5 +337,6 @@ Authorization: Bearer
         }
     ]
 }
+
 ```
 
