@@ -64,7 +64,7 @@ class AnswerCheck(Resource):
     @auth.login_required
     def get(self, id):
         answer_man = g.user
-        ans = Answer.query.filter_by(user_id=g.user.id, set_id=id).first()
+        ans = Answer.query.filter_by(user_id=answer_man.id, set_id=id).first()
         if ans:
             return fail_msg(msg="你只能回答一次哦")
         return success_msg(msg="没有回答过")
