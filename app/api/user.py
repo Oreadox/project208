@@ -108,7 +108,8 @@ class Register(Resource):
                     "status": 1,
                     "message": "获取成功",
                     "token": token.decode("ascii"),
-                    "sex": user.gender
+                    "sex": user.gender,
+                    "name": user.name
                  }
             return {
                 "status": 0,
