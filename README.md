@@ -179,6 +179,7 @@ Authorization: Bearer
 {
     "status":1,
     "message":"出题成功"
+    "set_id":6
 }
 ```
 ## 获取我回答的问题
