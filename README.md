@@ -17,8 +17,9 @@ Authorization: Bearer
 {
     "status":1,
     "message":"登录成功",
-    "token":"dasdadasdadadadad"
-    "name": "郭昕宇"
+    "token":"dasdadasdadadadad",
+    "name": "郭昕宇",
+    "sex": 1 or 2 //1男2女
 }
 or
 {
@@ -256,6 +257,28 @@ Authorization: Bearer
 }
 
 ```
+## 判断是是否答过题
+### URL　/api/answercheck/<int:set_id>
+##### request header
+Authorization: Bearer
+### GET
+
+## RETURN
+```
+
+
+{
+    "status":0,
+    "message":"你已经回答过题了"
+}
+{
+    "status":1,
+    "message":"没有回答过"
+
+}
+
+
+
 
 
 ## 根据set_id获取题组

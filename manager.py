@@ -4,7 +4,7 @@ from flask_migrate import Migrate, MigrateCommand
 from app import app, api, db
 from app.api.user import Token, UserData, Password, Register
 from app.api.question import Question, QuestionMessage, MyQuestion, GetSet
-from app.api.answer import MyAnswer, AnswerMessage
+from app.api.answer import MyAnswer, AnswerMessage, AnswerCheck
 from app.models import DefaultQuestion, DefaultMessage, User,QuestionSet,Answer
 from flask_cors import CORS
 
@@ -24,6 +24,7 @@ api.add_resource(AnswerMessage, '/api/answer/message')
 api.add_resource(MyAnswer, '/api/answer/my')
 api.add_resource(Register, '/api/user/login')
 api.add_resource(GetSet, '/api/getset/<int:id>')
+api.add_resource(AnswerCheck, '/api/answercheck/<int:id>')
 
 if __name__ == '__main__':
     manager.run()

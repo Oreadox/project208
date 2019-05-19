@@ -35,9 +35,6 @@ class MyAnswer(Resource):
             ["answer", dict, False, ""],
             ["message", str, False, ""]
         ]).parse_args()
-        ans = Answer.query.filter_by(id=answer_man.id, set_id=args["set_id"]).first()
-        if ans:
-            return fail_msg(msg="只能答一次题哦")
         question = QuestionSet.query.filter_by(id=args["set_id"]).first()
         q = json.loads(question.questions.replace("'", '"'))
         score = 0
@@ -60,6 +57,17 @@ class MyAnswer(Resource):
             message = qst_set.message
             data['message'] = message
         return success_msg(msg="提交成功", data=data)
+
+
+class AnswerCheck(Resource):
+
+    @auth.login_required
+    def get(self, id):
+        answer_man = g.user
+        ans = Answer.query.filter_by(user_id=g.user.id, set_id=id).first()
+        if ans:
+            return fail_msg(msg="你只能回答一次哦")
+        return success_msg(msg="没有回答过")
 
 
 class AnswerMessage(Resource):
