@@ -56,7 +56,9 @@ class MyAnswer(Resource):
             qst_set = QuestionSet.query.filter_by(id=args["set_id"]).first()
             message = qst_set.message
             data['message'] = message
-        return success_msg(msg="提交成功", data=data)
+            return success_msg(msg="提交成功", data=data)
+        else:
+            data['message'] = "由于研究结果未达标准，你无法查看TA给你的小纸条喔～"
 
 
 class AnswerCheck(Resource):
