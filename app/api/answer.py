@@ -16,7 +16,7 @@ class MyAnswer(Resource):
         查看我回答的问题
         """
         user = g.user
-        answers = Answer.query.join(QuestionSet).filter_by(user_id=user.id).all()
+        answers = Answer.query.filter_by(user_id=user.id).all()
         if answers:
             data = [answer.to_json() for answer in answers]
             return success_msg(msg="获取成功", data=data)
