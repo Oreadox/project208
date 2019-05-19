@@ -143,7 +143,7 @@ class Register(Resource):
         re = requests.request("GET", urlb, data='', headers=headers)
         user = User(id=args["username"],
                     name=re.json().get("base_info").get("xm"),
-                    gender=re.json().get("xb").get("dm"))
+                    gender=re.json().get("base_info").get("xb").get("dm"))
         user.hash_password(args["password"])
         db.session.add(user)
         db.session.commit()
@@ -154,7 +154,7 @@ class Register(Resource):
             "message": "成功",
             "token": token.decode("ascii"),
             "name": re.json().get("base_info").get("xm"),
-            "sex": re.json().get("xb").get("dm")
+            "sex": re.json().get("base_info").get("xb").get("dm")
         }
 
 
