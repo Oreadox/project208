@@ -104,8 +104,12 @@ class MyQuestion(Resource):
                                 message=args["messages"])
         db.session.add(questions)
         db.session.commit()
-        return success_msg(msg="出题成功！")
-
+        qu = questions.id
+        return {
+            "status": 1,
+            "message": "出题成功",
+            "set_id": qu
+        }
 
 class GetSet(Resource):
     @auth.login_required
