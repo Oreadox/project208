@@ -32,8 +32,8 @@ class MyAnswer(Resource):
         answer_man = g.user
         args = add_args([
             ["set_id", str, True, ""],
-            ["answer", dict, True, ""],
-            ["message", str, True, "a"]
+            ["answer", dict, False, ""],
+            ["message", str, False, ""]
         ]).parse_args()
         ans = Answer.query.filter_by(id=answer_man.id, set_id=args["set_id"]).first()
         if ans:
