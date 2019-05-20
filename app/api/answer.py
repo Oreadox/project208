@@ -74,7 +74,7 @@ class AnswerCheck(Resource):
             return fail_msg(msg="你只能回答一次哦")
         elif que:
             return fail_msg(msg="不能回答自己出的题～")
-        return success_msg(msg="没有回答过题目")
+        return success_msg(msg="")
 
 
 class AnswerMessage(Resource):
