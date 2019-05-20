@@ -63,14 +63,18 @@ class MyAnswer(Resource):
 
 
 class AnswerCheck(Resource):
+    """检查是否是第二次答题或者自己答自己题"""
 
     @auth.login_required
     def get(self, id):
         answer_man = g.user
         ans = Answer.query.filter_by(user_id=answer_man.id, set_id=id).first()
+        que = QuestionSet.query.filter_by(user_id=answer_man.id, id=id).first()
         if ans:
             return fail_msg(msg="你只能回答一次哦")
-        return success_msg(msg="没有回答过")
+        elif que:
+            return fail_msg(msg="不能回答自己出的题～")
+        return success_msg(msg="没有回答过题目")
 
 
 class AnswerMessage(Resource):
