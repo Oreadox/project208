@@ -102,7 +102,6 @@ class Register(Resource):
         user = User.query.filter_by(id=args["username"]).first()
         if user:
             if user.verify_password(password=args["password"]):
-
                 token = user.generate_auth_token()
                 return {
                     "status": 1,
@@ -111,10 +110,35 @@ class Register(Resource):
                     "sex": user.gender,
                     "name": user.name
                  }
-            return {
-                "status": 0,
-                "message": "密码错误！"
-            }
+            else:
+                urla = "https://os.ncuos.com/api/user/token"
+                payload = {
+                    "username": args["username"],
+                    "password": args["password"]
+                }
+                headers = {
+                    'Content-Type': "application/json",
+                    'Cache-Control': "no-cache",
+                    'Postman-Token': "1059212e-3f28-4244-9a47-c689158a469e",
+                    'Host': "os.ncuos.com"
+                }
+                response = requests.request("POST", urla, data=json.dumps(payload), headers=headers)
+                if response.json().get('status') == 0:
+                    return response.json()
+                user.hash_password(args["password"])
+                token = user.generate_auth_token()
+                db.session.commit()
+                return {
+                    "status": 1,
+                    "message": "获取成功",
+                    "token": token.decode("ascii"),
+                    "sex": user.gender,
+                    "name": user.name
+                }
+            # return {
+            #     "status": 0,
+            #     "message": "密码错误！"
+            # }
         urla = "https://os.ncuos.com/api/user/token"
         payload = {
             "username": args["username"],
