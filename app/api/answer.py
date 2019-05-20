@@ -1,6 +1,6 @@
 # encoding: utf-8
-from flask_restful import Resource, request, reqparse, abort
-import requests
+from flask_restful import Resource
+
 import json
 from .. import db, auth
 from ..message import success_msg, fail_msg, add_args
@@ -68,13 +68,15 @@ class AnswerCheck(Resource):
     @auth.login_required
     def get(self, id):
         answer_man = g.user
+        # 检查是否是第二次回答
         ans = Answer.query.filter_by(user_id=answer_man.id, set_id=id).first()
+        # 检查是否是自己出的题目
         que = QuestionSet.query.filter_by(user_id=answer_man.id, id=id).first()
         if ans:
             return fail_msg(msg="你只能回答一次哦")
         elif que:
             return fail_msg(msg="不能回答自己出的题～")
-        return success_msg(msg="")
+        return success_msg(msg="")  # 前端通过message长度判断，message要为空
 
 
 class AnswerMessage(Resource):
