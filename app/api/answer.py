@@ -52,7 +52,7 @@ class MyAnswer(Resource):
         data = {
             "score": score
         }
-        if score >= 60:
+        if score > 60:
             qst_set = QuestionSet.query.filter_by(id=args["set_id"]).first()
             message = qst_set.message
             data['message'] = message
