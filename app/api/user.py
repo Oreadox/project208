@@ -123,7 +123,7 @@ class Register(Resource):
                     'Host': "os.ncuos.com"
                 }
                 response = requests.request("POST", urla, data=json.dumps(payload), headers=headers)
-                if response.json().get('status') == 0:
+                if response.json().get('status') == 0 or not response.json().get('status'):
                     return response.json()
                 user.hash_password(args["password"])
                 token = user.generate_auth_token()
@@ -152,7 +152,7 @@ class Register(Resource):
         }
 
         response = requests.request("POST", urla, data=json.dumps(payload), headers=headers)
-        if response.json().get('status') == 0:
+        if response.json().get('status') == 0 or not response.json().get('status'):
             return response.json()
         urlb = "https://os.ncuos.com/api/user/profile/basic"
         token = 'passport ' + response.json().get("token")
