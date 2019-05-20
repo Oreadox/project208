@@ -198,6 +198,7 @@ Authorization: Bearer
             "id": 1,  // 回答问题的键
             "user_id": 1,  //出题人id
             "set_id": 1,  // 题组id
+            "set_sex": 1 or 2 // 1男2女
             "answers": {
                 "1": "B" //答题人的huida
             },
