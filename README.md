@@ -270,7 +270,7 @@ Authorization: Bearer
 
 {
     "status":0,
-    "message":"你已经回答过题了"
+    "message":"你已经回答过题了" "你不能回答自己出的题~"
 }
 {
     "status":1,
