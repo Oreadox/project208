@@ -99,6 +99,11 @@ class MyQuestion(Resource):
             ["questions", dict, True, ""],
             ["messages", str, True, ""]
         ]).parse_args()
+        if len(args["questions"]) != 5:
+            return {
+                "status": 0,
+                "message": "出题太少了！"
+            }, 401
         question = str(args["questions"])
         # questions = QuestionSet.query.filter_by(user_id=user.id).first()
         questions = QuestionSet(user_id=user.id,
